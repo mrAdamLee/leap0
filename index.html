@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+    <head> 
+
+    </head>
+    <body>
+        <label id="story">You find yourself in a maze.</label>
+        
+        <input type='button'  id='startbtn' value='start' onclick="startmaze()" />
+        
+       <script>
+class Maze {
+    constructor() {
+    if (this.constructor === Maze) {
+      throw new TypeError('Abstract class "Maze" cannot be instantiated');
+    }
+  }
+}
+
+class room extends Maze {
+  constructor(nextMaze) {
+    super(nextMaze);
+    this.nextMaze = nextMaze;
+  }
+  play() {
+    var description =
+      "You pass through a hallway and open a door. Do you continue?";
+    var body = document.getElementsByTagName("body")[0]
+    let lbl = document.getElementById('story');
+    lbl.innerText = description;
+    //hide left right
+    document.getElementById('btright').style.display = 'none';
+    document.getElementById('btleft').style.display = 'none';
+    //yes button
+    document.getElementById('btys').style.display = 'block';
+    btnys.addEventListener('click', () => this.nextMaze.play());
+    //no button
+    document.getElementById('btNo').style.display = 'block';
+    btnNo.addEventListener('click', () => this.dontPlay());
+    
+   
+  }
+  dontPlay(){
+    var description = "You stand there looking like a fool, do you continue now?";
+    
+    let lbl = document.getElementById('story');
+    lbl.innerText = description;
+
+    //yes button
+    
+    btnys.addEventListener('click', () => this.nextMaze.play());
+    //no button
+    
+    btnNo.addEventListener('click', () => dontPlay());
+
+  }
+  
+}
+class exit extends Maze {
+  constructor() {
+    super(description);
+    var description = "You have found the exit and exit the maze, you won!";
+    this.descr = description
+}
+  play() {
+    
+    var description = "You have found the exit and exit the maze, you won!";
+    let lbl = document.getElementById('story');
+    
+    lbl.innerText = this.descr;
+  }
+}
+class fork extends Maze {
+    constructor(nextMaze, nextMaze1){
+        super(nextMaze, nextMaze1);
+        this.nextMaze = nextMaze;
+        this.nextMaze1 = nextMaze1;
+
+    }
+
+    play(){
+        var description = "You come to a fork in the maze, which way do you go?";
+        //hide yes and no
+        document.getElementById('btys').style.display = 'none';
+        document.getElementById('btNo').style.display = 'none';
+        //left btn
+        document.getElementById('btright').style.display = 'block';
+        btnleft.addEventListener('click', () => this.nextMaze.play());
+        //btn right
+        document.getElementById('btleft').style.display = 'block';
+        btnright.addEventListener('click', () => this.nextMaze1.play());
+
+
+    }
+
+}
+class enemy extends Maze {
+
+    
+}
+
+function startmaze(){
+    let ext = new exit();
+    let myMaze = new room(ext);
+    let RmWithRm = new room(myMaze);
+    let frk = new fork(RmWithRm, myMaze);
+    var elem = document.getElementById('startbtn');
+    var body = document.getElementsByTagName("body")[0]
+    //yes btn
+    window.btnys = document.createElement('button'); 
+    btnys.id='btys';
+    body.appendChild(btnys);
+    btnys.innerText = "Yes";
+    document.getElementById('btys').style.display = 'none';
+    //no btn
+    window.btnNo = document.createElement('button');
+    btnNo.id = 'btNo';
+    body.appendChild(btnNo);
+    btnNo.innerText = "No";
+    document.getElementById('btNo').style.display = 'none';
+    //right btn
+    window.btnright = document.createElement('button');
+    btnright.id = 'btright';
+    body.appendChild(btnright);
+    btnright.innerText = "right";
+    document.getElementById('btright').style.display = 'none';
+    //left btn
+    window.btnleft = document.createElement('button');
+    btnleft.id = 'btleft';
+    body.appendChild(btnleft);
+    btnleft.innerText = "left";
+    document.getElementById('btleft').style.display = 'none';
+    //
+
+    elem.parentNode.removeChild(elem);
+    frk.play();
+}
+
+
+            
+
+        </script>
+
+    </body>
+</html>
