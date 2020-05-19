@@ -24,9 +24,15 @@ class room extends Maze {
   play() {
     var description =
       "You pass through a hallway and open a door. Do you continue?";
-    var body = document.getElementsByTagName("body")[0]
+    var body = document.getElementsByTagName("body")[0];
     let lbl = document.getElementById('story');
     lbl.innerText = description;
+    //image
+    var img = document.createElement("img");
+    img.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTm1ccJ98qlrnAchk1O3aWVY0YiPgF4e5YZL1cjwufzxsmM6wfi&usqp=CAU";
+    img.width = 600; 
+    img.height = 400;
+    document.body.appendChild(img);
     //hide left right
     document.getElementById('btright').style.display = 'none';
     document.getElementById('btleft').style.display = 'none';
@@ -62,12 +68,32 @@ class exit extends Maze {
     this.descr = description
 }
   play() {
+    var body = document.getElementsByTagName("body")[0];
     
-    var description = "You have found the exit and exit the maze, you won!";
     let lbl = document.getElementById('story');
-    
+    var img = document.createElement("img");
+    img.src = "https://stmedia.stimg.co/ows_154241981512544.jpg?fit=crop&crop=faces";
+    img.width = 600; 
+    img.height = 400;
+    document.body.appendChild(img);
     lbl.innerText = this.descr;
   }
+}
+class deadend extends Maze {
+    constructor(){
+      super(description)
+      var description = "You come to a dead end and give up. RIP";
+      this.descr = description;
+    }
+    play(){
+      let lbl = document.getElementById('story');
+      document.getElementById('btright').style.display = 'none';
+      document.getElementById('btleft').style.display = 'none';
+      document.getElementById('btys').style.display = 'none';
+      document.getElementById('btNo').style.display = 'none';
+      lbl.innerText = this.descr;
+    }
+
 }
 class fork extends Maze {
     constructor(nextMaze, nextMaze1){
@@ -78,6 +104,7 @@ class fork extends Maze {
     }
 
     play(){
+        let lbl = document.getElementById('story');
         var description = "You come to a fork in the maze, which way do you go?";
         //hide yes and no
         document.getElementById('btys').style.display = 'none';
@@ -88,21 +115,44 @@ class fork extends Maze {
         //btn right
         document.getElementById('btleft').style.display = 'block';
         btnright.addEventListener('click', () => this.nextMaze1.play());
-
+        lbl.innerText = description;
 
     }
 
 }
 class enemy extends Maze {
+    constructor(){
+        super(description)
+        var description = "You have run into an enemy, they totally rek your life and you now are failling all classes";
+        this.descr = description;
+    }
+    play(){
+    let lbl = document.getElementById('story');
+    var img = document.createElement("img");
+    var body = document.getElementsByTagName("body")[0];
+    document.getElementById('btright').style.display = 'none';
+    document.getElementById('btleft').style.display = 'none';
+    document.getElementById('btys').style.display = 'none';
+    document.getElementById('btNo').style.display = 'none';
+    img.src = "https://www.heywood.org/images/heyBanner/imgBanner/banner2.png";
+    img.width = 600; 
+    img.height = 400;
+    document.body.appendChild(img);
+    lbl.innerText = this.descr;
+    }
 
-    
 }
 
 function startmaze(){
     let ext = new exit();
+    let de = new deadend();
+    let emy = new enemy();
+    let deroom = new room(de);
     let myMaze = new room(ext);
+    let RmWithEmy = new room(emy);
     let RmWithRm = new room(myMaze);
-    let frk = new fork(RmWithRm, myMaze);
+    let frk1 = new fork(deroom, emy);
+    let frk = new fork(RmWithRm, frk1);
     var elem = document.getElementById('startbtn');
     var body = document.getElementsByTagName("body")[0]
     //yes btn
